@@ -2,6 +2,7 @@ require 'pry'
 
 def consolidate_cart(cart)
   ordered_cart = {}
+<<<<<<< HEAD
   # i = 0 
   # while i < cart.length do 
   #   ordered_cart[cart[i].keys[0]] = cart[i].values[0]
@@ -19,10 +20,19 @@ def consolidate_cart(cart)
       }
     end
   end
+=======
+  i = 0 
+  while i < cart.length do 
+    ordered_cart[cart[i].keys[0]] = cart[i].values[0]
+    ordered_cart[cart[i].keys[0]][:count] = cart.count(cart[i])
+    i += 1 
+  end 
+>>>>>>> 37cff91900407767550891eb0706d84fe5fc5bd7
   ordered_cart
 end
 
 def apply_coupons(cart, coupons)
+<<<<<<< HEAD
   # i = 0 
   # while i < coupons.length do 
   #   if cart.has_key?("#{coupons[i][:item]} W/COUPON") and coupons[i][:num] <= cart[coupons[i][:item]][:count]
@@ -55,6 +65,24 @@ def apply_coupons(cart, coupons)
         cart[coupon[:item]][:count] -= coupon[:num]
       end
     end
+=======
+  i = 0 
+  while i < coupons.length do 
+    if cart.has_key?("#{coupons[i][:item]} W/COUPON")
+      cart["#{coupons[i][:item]} W/COUPON"][:count] += coupons[i][:num]
+      cart[coupons[i][:item]][:count] -= coupons[i][:num]
+    elsif cart.has_key?(coupons[i][:item]) 
+      cart[coupons[i][:item]][:count] -= coupons[i][:num]
+      cart["#{coupons[i][:item]} W/COUPON"] = 
+      {
+        :price => (coupons[i][:cost] / coupons[i][:num]), 
+        :clearance => cart[coupons[i][:item]][:clearance], 
+        :count => coupons[i][:num]
+        
+      }
+    end
+    i += 1 
+>>>>>>> 37cff91900407767550891eb0706d84fe5fc5bd7
   end
   cart
 end
@@ -69,6 +97,7 @@ def apply_clearance(cart)
 end
 
 def checkout(cart, coupons)
+<<<<<<< HEAD
   # ordered = consolidate_cart(cart)
   # order_discounted = apply_coupons(ordered, coupons)
   # clearanced = apply_clearance(order_discounted)
@@ -92,6 +121,17 @@ def checkout(cart, coupons)
     total += cart_with_discounts_applied[item][:price]*cart_with_discounts_applied[item][:count]
   end
   total > 100.00 ? (total * 0.90).round : total
+=======
+  ordered = consolidate_cart(cart)
+  coupon = apply_coupons(ordered, coupons)
+  clearanced = apply_clearance(coupon)
+  clearanced.reduce(0) {
+    |total, item| total + (item.each do |key, value|
+      item[key][:price]
+      end)
+  }
+  total
+>>>>>>> 37cff91900407767550891eb0706d84fe5fc5bd7
 end
 
 
